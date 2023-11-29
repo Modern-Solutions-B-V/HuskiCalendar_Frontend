@@ -1,0 +1,249 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-column {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.container{
+  border: 2px;
+}
+
+.event-content {
+  
+  overflow: hidden;
+}
+
+
+
+.event-title {
+  font-size: 14px;
+  color: #eef2f5; 
+  word-wrap: break-word;
+  font-weight: bold;
+}
+
+.rbc-time-header-cell-single-day{
+display: block;
+}
+
+
+.eventtitle {
+  font-weight: bold;
+  font-size: 12px;
+  color: #025594; 
+  word-wrap: break-word;
+  
+}
+
+.eventtitla{
+  font-weight: bold;
+  font-size: 12px;
+  color: #000000; 
+  word-wrap: break-word;
+
+}
+
+.event-place {
+  font-size: 12px;
+  color: #f4f2f2; /* Dark gray color */  
+}
+
+.multiple-events::before {
+  content: attr(data-event-count);
+  background-color: #ff4500; /* Couleur d'arrière-plan pour indiquer plusieurs événements */
+  color: #fff; /* Couleur du texte */
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.rbc-row{
+box-sizing: border-box;
+min-height: 20px;
+
+}
+
+
+
+.eventalista{
+box-sizing: border-box;
+min-height: 20px;
+border-top: 1px solid #ddd;
+height: 77px;
+}
+
+.rbc-time-gutter {
+  display: none;
+}
+
+.rbc-time-content{
+  display: none;
+}
+
+.rbc-time-view {
+  .rbc-label {
+  display: none;
+  }
+  .rbc-allday-cell {
+  height: calc(100vh - 98px);
+  max-height: unset;
+  }
+  .rbc-time-content {
+  display: none;
+  }
+  }
+
+  .rbc-header {
+      background: #79b8e4;
+      color: white;
+      padding: 14px;
+      font-size: 14px;
+      white-space: pre-line;
+      height: 60px;
+  }
+  
+
+  .calend-container {
+      display: flex;
+    }
+    
+    .calendar-column {
+      flex: 2; /* Le calendrier prendra 2/3 de l'espace */
+   
+    }
+
+    *, ::after, ::before {
+      box-sizing: inherit;
+    }
+
+    .event-details-container {
+      width: 100%;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .event-details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .event-details-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .event-details-status {
+      font-size: 16px;
+      color: rgba(16, 54, 136, 0.596);
+    }
+    
+    .event-details-dates {
+      font-size: 16px;
+      color: rgba(16, 54, 136, 0.596);
+    }
+    
+    .event-details-body {
+      margin-top: 20px;
+    }
+    
+    .event-details-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      background-color: #e6e6e6;
+    }
+    
+    .event-details-label {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .event-details-value {
+      font-size: 16px;
+    }
+    
+    .event-details-bookingelements-container {
+      margin-top: 20px;
+    }
+    
+    .event-details-bookingelement {
+      margin-bottom: 10px;
+    }
+    
+    .event-details-bookingelement-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .event-details-bookingelement-details {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .event-details-bookingelement-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .event-details-bookingelement-detail label {
+      font-size: 14px;
+      color: #000000;
+    }
+    
+    .event-details-bookingelement-detail span {
+      font-size: 14px;
+    }
+    
+
+    .event-details-bookingelement {
+      background-color: #e6e6e6;
+      padding: 10px;
+    }
+    
+
+    .booking-element {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+  }
+
+  .element-tittle{
+    font-weight: bold;
+    font-size: 10px;
+    color: #ffffff; 
+  
+  }
+
+ 
+ 
+  
+    
+  
