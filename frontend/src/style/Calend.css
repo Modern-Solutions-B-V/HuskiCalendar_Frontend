@@ -21,229 +21,196 @@ label {
 
 input {
   border: 1px solid #ccc;
-  padding: 5px;
-  margin-top: 5px;
 }
 
-.container{
+.container {
   border: 2px;
-}
-
-.event-content {
-  
-  overflow: hidden;
 }
 
 
 
 .event-title {
   font-size: 14px;
-  color: #eef2f5; 
-  word-wrap: break-word;
+  color: #eef2f5;
   font-weight: bold;
 }
 
-.rbc-time-header-cell-single-day{
-display: block;
+.rbc-time-header-cell-single-day {
+  display: block;
 }
 
 
 .eventtitle {
   font-weight: bold;
   font-size: 12px;
-  color: #025594; 
+  color: #025594;
   word-wrap: break-word;
-  
+
 }
 
-.eventtitla{
+.eventtitla {
   font-weight: bold;
   font-size: 12px;
-  color: #000000; 
+  color: #000000;
   word-wrap: break-word;
 
 }
 
 .event-place {
   font-size: 12px;
-  color: #f4f2f2; /* Dark gray color */  
+  color: #f4f2f2;
+  /* Dark gray color */
 }
 
 .multiple-events::before {
   content: attr(data-event-count);
-  background-color: #ff4500; /* Couleur d'arrière-plan pour indiquer plusieurs événements */
-  color: #fff; /* Couleur du texte */
+  background-color: #ff4500;
+  /* Couleur d'arrière-plan pour indiquer plusieurs événements */
+  color: #fff;
+  /* Couleur du texte */
   padding: 2px 5px;
   border-radius: 3px;
   margin-right: 5px;
 }
 
-.rbc-row{
-box-sizing: border-box;
-min-height: 20px;
-
-}
 
 
 
-.eventalista{
-box-sizing: border-box;
-min-height: 20px;
-border-top: 1px solid #ddd;
-height: 77px;
+.eventalista {
+  border-top: 2px solid #ddd;
 }
 
 .rbc-time-gutter {
   display: none;
 }
 
-.rbc-time-content{
+.rbc-time-content {
   display: none;
 }
 
 .rbc-time-view {
   .rbc-label {
-  display: none;
+    display: none;
   }
+
   .rbc-allday-cell {
-  height: calc(100vh - 98px);
-  max-height: unset;
+    height: calc(100vh - 98px);
+    max-height: unset;
   }
+
   .rbc-time-content {
-  display: none;
+    display: none;
   }
-  }
+}
 
-  .rbc-header {
-      background: #79b8e4;
-      color: white;
-      padding: 14px;
-      font-size: 14px;
-      white-space: pre-line;
-      height: 60px;
-  }
-  
+.rbc-header {
+  background: #79b8e4;
+  color: white;
+  font-size: 14px;
+  white-space: pre-line;
+  height: 60px;
+}
 
-  .calend-container {
-      display: flex;
-    }
-    
-    .calendar-column {
-      flex: 2; /* Le calendrier prendra 2/3 de l'espace */
-   
-    }
 
-    *, ::after, ::before {
-      box-sizing: inherit;
-    }
+.calend-container {
+  display: flex;
+}
 
-    .event-details-container {
-      width: 100%;
-      margin: 0 auto;
-      border: 1px solid #ccc;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .event-details-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .event-details-title {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    
-    .event-details-status {
-      font-size: 16px;
-      color: rgba(16, 54, 136, 0.596);
-    }
-    
-    .event-details-dates {
-      font-size: 16px;
-      color: rgba(16, 54, 136, 0.596);
-    }
-    
-    .event-details-body {
-      margin-top: 20px;
-    }
-    
-    .event-details-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      background-color: #e6e6e6;
-    }
-    
-    .event-details-label {
-      font-size: 16px;
-      font-weight: bold;
-    }
-    
-    .event-details-value {
-      font-size: 16px;
-    }
-    
-    .event-details-bookingelements-container {
-      margin-top: 20px;
-    }
-    
-    .event-details-bookingelement {
-      margin-bottom: 10px;
-    }
-    
-    .event-details-bookingelement-name {
-      font-size: 16px;
-      font-weight: bold;
-    }
-    
-    .event-details-bookingelement-details {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .event-details-bookingelement-detail {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-    
-    .event-details-bookingelement-detail label {
-      font-size: 14px;
-      color: #000000;
-    }
-    
-    .event-details-bookingelement-detail span {
-      font-size: 14px;
-    }
-    
+.calendar-column {
+  flex: 2;
+  /* Le calendrier prendra 2/3 de l'espace */
 
-    .event-details-bookingelement {
-      background-color: #e6e6e6;
-      padding: 10px;
-    }
-    
+}
 
-    .booking-element {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-  }
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}
 
-  .element-tittle{
-    font-weight: bold;
-    font-size: 10px;
-    color: #ffffff; 
-  
-  }
+.event-details-container {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
- 
- 
-  
-    
-  
+.event-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-details-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.event-details-status {
+  font-size: 16px;
+  color: rgba(16, 54, 136, 0.596);
+}
+
+.event-details-dates {
+  font-size: 16px;
+  color: rgba(16, 54, 136, 0.596);
+}
+
+
+.event-details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6e6e6;
+}
+
+.event-details-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.event-details-value {
+  font-size: 16px;
+}
+
+
+
+.event-details-bookingelement-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.event-details-bookingelement-details {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-details-bookingelement-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-details-bookingelement-detail label {
+  font-size: 14px;
+  color: #000000;
+}
+
+.event-details-bookingelement-detail span {
+  font-size: 14px;
+}
+
+
+.event-details-bookingelement {
+  background-color: #e6e6e6;
+}
+
+
+
+.element-tittle {
+  font-weight: bold;
+  font-size: 10px;
+  color: #ffffff;
+
+}
