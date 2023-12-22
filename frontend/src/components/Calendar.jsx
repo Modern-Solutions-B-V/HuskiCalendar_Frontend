@@ -6,10 +6,10 @@ import parse from "date-fns/parse";
 import '../style/Calend.css';
 import Layout from "../components/Layout";
 import { Scrollbars } from 'react-custom-scrollbars';
-import { startOfWeek, endOfWeek, isWithinInterval, format } from 'date-fns';
+import { isWithinInterval, format } from 'date-fns';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import set from 'date-fns/set';
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfDay, endOfDay } from 'date-fns';
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -28,6 +28,7 @@ const localizer = dateFnsLocalizer({
 const EventComponent = ({ event, currentView }) => {
     let content = null;
 
+
     switch (currentView) {
         case "month":
             content = (
@@ -43,13 +44,34 @@ const EventComponent = ({ event, currentView }) => {
         case "week":
             content = (
                 <div className="event-content">
-                    <Scrollbars style={{ height: 73 }}>
-                        {event.booking_elements?.map((element, index) => (
-                            <div key={index} className="booking-element">
-                                <p className="element-tittle"><b>{element.element_name}</b></p>
-                                <p className="event-place">{element.starttime.toLocaleString()} - {element.endtime.toLocaleString()}</p>
-                            </div>
-                        ))}
+                    <Scrollbars style={{ height: 64 }}>
+                        {event.booking_elements
+                            ?.sort((a, b) => new Date(a.startdate) - new Date(b.startdate))
+                            .map((element, index) => {
+                                const overlappingElements = event.booking_elements.filter(
+                                    otherElement =>
+                                        (element.starttime >= otherElement.starttime && element.starttime <= otherElement.endtime) ||
+                                        (element.endtime >= otherElement.starttime && element.endtime <= otherElement.endtime) ||
+                                        (element.starttime <= otherElement.starttime && element.endtime >= otherElement.endtime)
+                                );
+
+                                // Vérifier si cet élément se superpose à d'autres
+                                const overlaps = overlappingElements.length > 1;
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className={`booking-element ${overlaps ? 'overlapping' : ''}`}
+                                    >
+                                        <p className="element-tittle">
+                                            <b>{element.element_name}</b>
+                                        </p>
+                                        <p className="event-place">
+                                            {element.starttime.toLocaleString()} - {element.endtime.toLocaleString()}
+                                        </p>
+                                    </div>
+                                );
+                            })}
                     </Scrollbars>
                 </div>
             );
@@ -87,6 +109,8 @@ const Calend = () => {
     const handleViewChange = (newView) => {
         setCurrentView(newView);
     };
+    let startDate = startOfWeek(currentDate);
+    let endDate = endOfWeek(currentDate);
 
 
     const [showModal, setShowModal] = useState(false);
@@ -102,10 +126,32 @@ const Calend = () => {
     const role = localStorage.getItem('role')
 
     useEffect(() => {
+        let startDate, endDate;
+
+        switch (currentView) {
+            case "month":
+                startDate = startOfMonth(currentDate);
+                endDate = endOfMonth(currentDate);
+                break;
+            case "week":
+                startDate = startOfWeek(currentDate);
+                endDate = endOfWeek(currentDate);
+                break;
+            case "day":
+                startDate = startOfDay(currentDate);
+                endDate = endOfDay(currentDate);
+                break;
+            default:
+                startDate = startOfMonth(currentDate);
+                endDate = endOfMonth(currentDate);
+                break;
+        }
+
+
         axios.get(`http://localhost:5000/booking/getBookingsByDateRange`, {
             params: {
-                startDate: "2010-03-09 00:00:00",
-                endDate: "2026-03-09 00:00:00",
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
             }
         })
             .then((response) => {
@@ -136,13 +182,11 @@ const Calend = () => {
             .catch((error) => {
                 console.error("Erreur lors de la récupération des réservations :", error);
             });
-    }, [currentDate]);
+    }, [currentDate, currentView]);
 
     const clickRef = useRef(null);
     const onDoubleClickEvent = useCallback((calEvent) => {
-        /**
-         * Notice our use of the same ref as above.
-         */
+
         window.clearTimeout(clickRef?.current)
         clickRef.current = window.setTimeout(() => {
             window.alert(calEvent, 'onDoubleClickEvent')
@@ -152,67 +196,69 @@ const Calend = () => {
     const customDayFormat = (date, culture, localizer) => {
         const formattedDate = localizer.format(date, 'dd/MM/yyyy', culture);
         const dayOfWeek = localizer.format(date, 'EEEE', culture);
-            return `${dayOfWeek} ${formattedDate}`;
+        return `${dayOfWeek} ${formattedDate}`;
     };
-    
+
 
 
     return (
         <>
-            <Layout>
-                <div className="calend-container">
-                    <div className="rbc-row">
-                        {currentView === "week" && (
-                            <div className="calendar-events-weekly" style={{ paddingTop: "46px", width: "300px" }}>
-                                <div className="rbc-header">
-                                    <span>Event</span>
-                                </div>
-                                {events.map((event) => {
-                                    const weekStart = startOfWeek(currentDate);
-                                    const weekEnd = endOfWeek(currentDate);
-                                    if (isWithinInterval(event.start, { start: weekStart, end: weekEnd })) {
-                                        return (
-                                            <div key={event.id} className="eventalista">
-                                                <div className="rbc-row-content-scroll-container">
-                                                    <h6 className="eventtitla" style={{ textDecoration: 'underline' }}>{event.title}</h6 >
-                                                    <h6 className="eventtitla" style={{ backgroundColor: 'yellow' }}>Status: {event.status_code}</h6 >
-                                                    <h6 className="eventtitla">{`${format(event.start, 'dd/MMM/yyyy')}-${format(event.end, 'dd/MMM/yyyy')}`}</h6 >
-                                                </div>
-                                            </div>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </div>
-                        )}
-                        {currentView === "day" && (
-                            <div className="calendar-events-weekly" style={{ paddingTop: "46px", width: "300px" }}>
-                                <div className="rbc-header">
-                                    <span>Event</span>
-                                </div>
-                                {events.map((event) => {
-                                    const weekStart = startOfWeek(currentDate);
-                                    const weekEnd = endOfWeek(currentDate);
-                                    if (isWithinInterval(event.start, { start: weekStart, end: weekEnd })) {
-                                        return (
-                                            <div key={event.id} className="eventalista">
-                                                <div className="rbc-row-content-scroll-container">
-                                                    <h6 className="eventtitla" style={{ textDecoration: 'underline' }}>{event.title}</h6 >
-                                                    <h6 className="eventtitla" style={{ backgroundColor: 'yellow' }}>Status: {event.status_code}</h6 >
-                                                    <h6 className="eventtitla">{`${format(event.start, 'dd/MMM/yyyy')}-${format(event.end, 'dd/MMM/yyyy')}`}</h6 >
-                                                </div>
-                                            </div>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </div>
-                        )}
 
-                    </div>
-                    <div className="calendar-column">
+            <div className="container-fluid">
+                <div className="row">
+                    {currentView === "week" && (
+                        <div className="col pt-md-5 mt-md-5 mt-lg-0 pt-lg-5 d-none d-md-block me-0 pe-0">
+                            <div className="rbc-header">
+                                <span>Event</span>
+                            </div>
+                            {events
+                                .filter((event) => {
+                                    startDate = startOfWeek(currentDate);
+                                    endDate = endOfWeek(currentDate);
+                                    return isWithinInterval(event.start, { start: startDate, end: endDate });
+                                })
+                                .sort((eventA, eventB) => eventA.start - eventB.start) // Tri par date croissante
+                                .map((event) => (
+                                    <div key={event.id} className="eventalista">
+                                        <div className="rbc-row-content-scroll-container">
+                                            <h6 className="eventtitla" style={{ textDecoration: 'underline' }}>{event.title}</h6 >
+                                            <h6 className="eventtitla" style={{ backgroundColor: 'yellow' }}>Status: {event.status_code}</h6 >
+                                            <h6 className="eventtitla">{`${format(event.start, 'dd/MMM/yyyy')}-${format(event.end, 'dd/MMM/yyyy')}`}</h6 >
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    )}
+                    {currentView === "day" && (
+                        <div className="col pt-md-5 mt-md-5 mt-lg-0 pt-lg-5 d-none d-md-block me-0 pe-0">
+                            <div className="rbc-header">
+                                <span>Event</span>
+                            </div>
+                            {events
+                                .filter((event) => {
+                                    startDate = startOfWeek(currentDate);
+                                    endDate = endOfWeek(currentDate);
+                                    return isWithinInterval(event.start, { start: startDate, end: endDate });
+                                })
+                                .sort((eventA, eventB) => eventA.start - eventB.start) // Tri par date croissante
+                                .map((event) => (
+                                    <div key={event.id} className="eventalista">
+                                        <div className="rbc-row-content-scroll-container">
+                                            <h6 className="eventtitla" style={{ textDecoration: 'underline' }}>{event.title}</h6 >
+                                            <h6 className="eventtitla" style={{ backgroundColor: 'yellow' }}>Status: {event.status_code}</h6 >
+                                            <h6 className="eventtitla">{`${format(event.start, 'dd/MMM/yyyy')}-${format(event.end, 'dd/MMM/yyyy')}`}</h6 >
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    )}
+
+
+                    <div className={currentView !== "month" && currentView !== "agenda" ? "col-md-8 pt-md-3 pt-lg-1 ms-0 ps-0 " : "col "}>
                         <Calendar
-                              formats={{
+                            formats={{
                                 dayFormat: (date, culture, localizer) =>
                                     customDayFormat(date, culture, localizer),
                             }}
@@ -240,19 +286,21 @@ const Calend = () => {
                             showAllEvents
                             onDoubleClickEvent={onDoubleClickEvent}
 
+
                         />
 
                     </div>
-
                 </div>
-            </Layout>
+
+
+
+            </div>
 
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>{SelectedEvent.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* <p className="event-details-dates">{`${format(SelectedEvent.start, "dd/MMM/yyyy")}-${format(SelectedEvent.end, "dd/MMM/yyyy")}`}</p> */}
                     <div className="event-details-label">Booking:</div>
                     <div className="event-details-value">{SelectedEvent.number}</div>
                     <div className="event-details-label">Company Name:</div>
@@ -306,4 +354,4 @@ const Calend = () => {
     );
 };
 
-export default Calend;
+export default Calend; 
